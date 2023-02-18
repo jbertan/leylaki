@@ -1,0 +1,44 @@
+$primary-color: rgba(166, 21, 143, 1);
+$secondary-color: rgba(186, 21, 143, 1);
+$tertiary-color: rgba(206, 21, 143, 1);
+$light-color: rgba(226, 21, 143, 1);
+$green-color: rgba(18, 178, 34, 1);
+$green-light-color: rgba(25, 240, 47, 1);
+
+$primary-text-color: rgba(20, 19, 20, 1);
+$secondary-text-color: rgba(124, 116, 123, 1);
+$tertiary-text-color: rgba(198, 195, 197, 1);
+$light-text-color: rgba(255, 255, 255, 1);
+
+$medium-size: 950px;
+
+//utilities
+.u-margin-bottom-small {
+  margin-bottom: 0.5rem;
+}
+.u-margin-bottom-medium {
+  margin-bottom: 1rem;
+}
+.u-margin-bottom-big {
+  margin-bottom: 2rem;
+}
+.u-margin-bottom-large {
+  margin-bottom: 4rem;
+}
+
+//margin left
+.u-margin-left-small {
+  margin-left: 0.5rem;
+}
+
+.u-margin-left-medium {
+  margin-left: 1rem;
+}
+
+.u-margin-left-big {
+  margin-left: 2rem;
+}
+
+.u-margin-left-large {
+  margin-left: 4rem;
+}
