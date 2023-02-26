@@ -58,6 +58,9 @@ const EditProducts = (props: props) => {
       }
     );
     const result = await response.json();
+    if (result) {
+      window.location.reload();
+    }
     console.log(result);
   };
 
