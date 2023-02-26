@@ -3,21 +3,34 @@ import Products from "../../components/products";
 import picture2 from "../../static-img/popular2.jpg";
 import { Roboto } from "@next/font/google";
 import { GetStaticProps, NextPage } from "next";
+import { getAllProducts } from "@/components/util/connectDb";
+import { ObjectId } from "mongodb";
 import fs from "fs/promises";
 import path from "path";
-
+import SideBar from "@/components/sidebar";
+import Footer from "@/components/footer";
+enum _Categories {
+  hediye = "hediye",
+  taki = "taki",
+}
 const roboto = Roboto({
   weight: ["100", "400", "700", "900"],
   style: "normal",
-  subsets: ["latin"],
+  subsets: ["cyrillic"],
   variable: "--roboto-font",
 });
 
+interface iProduct {
+  kod: string;
+  name: string;
+  id: ObjectId;
+  fileName: string;
+}
 interface Props {
-  dirs: string[];
+  products: iProduct[];
 }
 
-const Takı: NextPage<Props> = ({ dirs }) => {
+const Taki: NextPage<Props> = ({ products }) => {
   return (
     <div className={roboto.variable}>
       <Head>
@@ -27,27 +40,17 @@ const Takı: NextPage<Props> = ({ dirs }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="products__container">
-        <section className="sidebar">
-          <picture className="sidebar__logo">
-            <div className="sidebar__logo--mask">Leylaki</div>
-          </picture>
-          <a href="#" className="sidebar__takilar">
-            Takilar
-          </a>
-          <a href="#" className="sidebar__hediyelik-esyalar">
-            Hediyelik Esyalar
-          </a>
-        </section>
+        <SideBar />
       </div>
       <main className="products__page">
         <h2 className="products__page__h2">KOLYELER</h2>
-        <section className="product">
-          {dirs.map((item, i) => (
+        <section className="product u-margin-bottom-medium">
+          {products.map((product, i) => (
             <Products
               key={i}
-              picture={"/images/taki/" + item}
-              kod={"EO86"}
-              etiket={"Kolye Demir"}
+              picture={`/images/products/${product.fileName}`}
+              kod={product.kod}
+              etiket={product.name}
             />
           ))}
 
@@ -56,19 +59,15 @@ const Takı: NextPage<Props> = ({ dirs }) => {
           <Products picture={picture2} kod={"EO86"} etiket={"Kolye Demir"} />
           <Products picture={picture2} kod={"EO86"} etiket={"Kolye Demir"} />
         </section>
+        <Footer />
       </main>
     </div>
   );
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  try {
-    const dirs = await fs.readdir(
-      path.join(process.cwd(), "/public/images/taki")
-    );
-    return { props: { dirs }, revalidate: 60 };
-  } catch (error) {
-    return { props: { error } };
-  }
+  const products = await getAllProducts(_Categories.taki);
+  console.log(products);
+  return { props: { products }, revalidate: 60 };
 };
-export default Takı;
+export default Taki;

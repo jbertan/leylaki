@@ -10,7 +10,7 @@ const Carousel = () => {
         Takı Kolleksiyonu
       </h3>
 
-      <Button buttonName="ne" onClick={onSubmitEvent}>
+      <Button buttonName="media500absolute" onClick={onSubmitEvent}>
         Kolleksiyon &rarr;
       </Button>
     </div>

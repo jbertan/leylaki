@@ -5,7 +5,7 @@ import "@testing-library/jest-dom";
 
 test("main page header test", () => {
   render(<Home />);
-  const taki = screen.getByRole("link", { name: /takilar/i });
+  const taki = screen.getByRole("link", { name: /takılar/i });
   expect(taki).toHaveClass("sidebar__takilar");
   expect(taki).toHaveAttribute("href", "./taki");
   const hediye = screen.getByRole("link", { name: /Hediyelik Esyalar/i });

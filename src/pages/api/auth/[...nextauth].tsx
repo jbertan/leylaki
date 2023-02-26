@@ -1,6 +1,8 @@
 import NextAuth from "next-auth";
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { adminLogin } from "@/components/util/connectDb";
+import { comparePassword, hashPassword } from "@/components/util/hash";
 /* import { ConnectDatabase } from "../../../components/util/ConnectDb";
 import { comparePassword } from "../../../components/util/Hash"; */
 interface data1 {
@@ -56,6 +58,17 @@ export const authOptions: NextAuthOptions = {
         req: any
       ) {
         const { userName, password } = credentials;
+        const uppercaseUsername = userName.toUpperCase();
+        const response = (await adminLogin(uppercaseUsername)) as data1;
+        const approved = await comparePassword(password, response.password);
+
+        //const result = await response.json();
+        if (approved) {
+          return { email: response.userName };
+        } else {
+          throw new Error("User Not Found");
+        }
+
         /*      const client = await ConnectDatabase();
         const db = client.db("profile");
         const users = db.collection("users");
