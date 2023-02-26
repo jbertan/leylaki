@@ -3,6 +3,7 @@ import { useState, useRef, FormEvent, useEffect } from "react";
 import { SignInResponse, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
+import { hashPassword } from "@/components/util/hash";
 enum loadingStatusEnum {
   loading = "loading",
   authenticated = "authenticated",
@@ -24,6 +25,8 @@ const Admin = () => {
     const userName = usernameRef.current?.value;
     const password = passwordRef.current?.value;
     console.log(`Kullanıcı adı: ${userName} ve şifre ${password}`);
+    const hashedPass = hashPassword(password!);
+    console.log(hashedPass);
     const result = await signIn("credentials", {
       redirect: false,
       userName,

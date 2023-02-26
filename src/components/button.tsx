@@ -7,7 +7,10 @@ interface props {
 const Button = (props: props) => {
   return (
     <>
-      <button onClick={props.onClick} className="button-explorer">
+      <button
+        onClick={props.onClick}
+        className={`button-explorer ${props.buttonName}`}
+      >
         {props.children}
       </button>
     </>

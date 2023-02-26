@@ -41,6 +41,8 @@ const UploadFile: NextPage<Props> = () => {
   }
 
   const testRef = () => {
+    setUploading(true);
+    console.log(kategori);
     const kod = kodRef.current?.value;
     const name = nameRef.current?.value;
     if (selectedFile != null && kategori != "" && kod != null && name != null) {
@@ -51,11 +53,9 @@ const UploadFile: NextPage<Props> = () => {
         name,
       });
     }
-
-    const kategoriCheck = document.querySelector(
-      "input[type=radio]:checked"
-    ) as HTMLInputElement;
-    kategoriCheck.checked = false;
+    setUploading(false);
+    setSelectedFile(undefined);
+    setSelectedImage("");
 
     if (nameRef.current) {
       nameRef.current.value = "";
@@ -64,19 +64,7 @@ const UploadFile: NextPage<Props> = () => {
       kodRef.current.value = "";
     }
   };
-  const handleUpload = async () => {
-    setUploading(true);
-    try {
-      if (!selectedFile) return;
-      const formData = new FormData();
-      formData.append("myImage", selectedFile);
-      const { data } = await axios.post("/api/image", formData);
-      console.log(data);
-    } catch (error: any) {
-      console.log(error.response?.data);
-    }
-    setUploading(false);
-  };
+
   return (
     <div className={roboto.variable}>
       <Head>
@@ -173,21 +161,21 @@ const UploadFile: NextPage<Props> = () => {
                   <input
                     name="Kategori"
                     type="radio"
-                    onChange={(e) => setKategori(_Categories.taki)}
-                    value={_Categories.taki}
-                    className="upload__container__uploadfiles__dropdown__single--items"
-                  />
-                  <span>Takı</span>
-                </div>
-                <div className="upload__container__uploadfiles__dropdown__single">
-                  <input
-                    name="Kategori"
-                    type="radio"
                     onChange={(e) => setKategori(_Categories.hediye)}
                     value={_Categories.hediye}
                     className="upload__container__uploadfiles__dropdown__single--items"
                   />
                   <span>Hediyelik Eşya</span>
+                </div>
+                <div className="upload__container__uploadfiles__dropdown__single">
+                  <input
+                    name="Kategori"
+                    type="radio"
+                    onChange={(e) => setKategori(_Categories.taki)}
+                    value={_Categories.taki}
+                    className="upload__container__uploadfiles__dropdown__single--items"
+                  />
+                  <span>Takı</span>
                 </div>
               </div>
             </div>
@@ -228,7 +216,6 @@ const UploadFile: NextPage<Props> = () => {
     </div>) */
 };
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  console.log(context);
   return {
     props: {
       session: await getSession(context),
