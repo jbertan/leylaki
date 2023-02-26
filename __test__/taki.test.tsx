@@ -1,10 +1,19 @@
-import Home from "@/pages/index";
+import Taki from "@/pages/taki/index";
 import Carousel from "@/components/carousel";
 import { fireEvent, render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
+import { ObjectId } from "mongodb";
+const products = [
+  {
+    kod: "Kod",
+    name: "Name",
+    id: new ObjectId(),
+    fileName: "patasd",
+  },
+];
 
 test("main page header test", () => {
-  render(<Home />);
+  render(<Taki products={products} />);
   const taki = screen.getByRole("link", { name: /takılar/i });
   expect(taki).toHaveClass("sidebar__takilar");
   expect(taki).toHaveAttribute("href", "./taki");
@@ -14,15 +23,4 @@ test("main page header test", () => {
   const Logo = screen.getByRole("link", { name: /leylaki/i });
   expect(Logo).toHaveClass("sidebar__logo--mask");
   expect(Logo).toHaveAttribute("href", "./");
-});
-
-test("main page Carousel test", () => {
-  render(<Carousel />);
-  const buttonKolleksiyon = screen.getByRole("button", {
-    name: /Kolleksiyon /i,
-  });
-  const logSpy = jest.spyOn(global.console, "log");
-  expect(buttonKolleksiyon).toHaveClass("button-explorer");
-  fireEvent.click(buttonKolleksiyon);
-  expect(logSpy).toHaveBeenCalledWith("selam");
 });

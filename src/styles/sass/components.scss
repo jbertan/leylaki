@@ -5,11 +5,14 @@
   grid-template-columns:
     [full-start] 1fr repeat(10, [col-start] 1fr [col-end])
     1fr [full-end];
+  column-gap: 1.5rem;
+  @media only screen and (max-width: $large-size) {
+    grid-template-rows: 8rem calc(50vh - 8rem) repeat(4, min-content);
+  }
 }
 
 .sidebar {
   grid-column: col-start 1 / col-end 10;
-
   display: grid;
   grid-template-rows: 8rem;
   grid-template-columns:
@@ -18,15 +21,17 @@
   align-items: center;
 
   &__logo {
+    padding-left: 1rem;
     grid-column: center-start / col-end 1;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    z-index: 300;
     &--mask {
       font-size: 3.6rem;
       font-weight: 900;
-      -webkit-background-clip: text;
+      background-clip: text;
       -webkit-text-fill-color: transparent;
       background-image: linear-gradient(
         to right,
@@ -37,6 +42,10 @@
     }
 
     align-self: center;
+    @media only screen and (max-width: 900px) {
+      grid-column: col-start 1 / col-end 1;
+      display: inline-block;
+    }
   }
   &__takilar {
     text-decoration: none;
@@ -47,7 +56,7 @@
     color: $primary-text-color;
     justify-self: center;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.1s;
     position: relative;
     &:hover {
       box-shadow: 0 1.5rem 2rem rgba(0, 0, 0, 0.2);
@@ -56,7 +65,9 @@
         opacity: 1;
       }
     }
-
+    @media only screen and (max-width: 900px) {
+      display: none;
+    }
     &:active {
       box-shadow: 0 1.5rem 2rem rgba(0, 0, 0, 0.2);
       transform: scale(1.01);
@@ -81,10 +92,9 @@
     font-weight: 700;
     text-transform: uppercase;
     grid-column: col-start 10 / col-end 11;
-    background-color: #fff;
     color: $primary-text-color;
     justify-self: center;
-    transition: all 0.2s;
+    transition: all 0.1s;
     position: relative;
     &:hover {
       box-shadow: 0 1.5rem 2rem rgba(0, 0, 0, 0.2);
@@ -93,11 +103,13 @@
         opacity: 1;
       }
     }
-
-    &:active {
+    @media only screen and (max-width: $tablet-size) {
+      display: none;
+    }
+    /*  &:a &:active {
       box-shadow: 0 1.5rem 2rem rgba(0, 0, 0, 0.2);
       transform: scale(1.01);
-    }
+    } */
 
     &::after {
       position: absolute;
@@ -119,8 +131,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
+  padding-bottom: 10rem;
 }
 .carousel {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -137,15 +152,38 @@
     ),
     url(../../static-img/mainpic.jpg);
 
+  @media only screen and (max-width: $small-size) {
+    align-items: center;
+    &::before {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 102%;
+      height: 102%;
+      content: "";
+      background-size: cover;
+      background-image: url(../../static-img/mainpic.jpg);
+      filter: blur(4px);
+    }
+  }
   &__text {
     font-size: 4rem;
     font-weight: 700;
     color: $primary-text-color;
+    @media only screen and (max-width: $small-size) {
+      color: $light-text-color;
+      position: absolute;
+      margin-bottom: 10rem;
+    }
   }
   &__alt-text {
     font-size: 3.2rem;
     font-weight: 700;
     color: $secondary-text-color;
+    @media only screen and (max-width: $small-size) {
+      color: $tertiary-text-color;
+      position: absolute;
+    }
   }
 }
 .popular {
@@ -160,7 +198,18 @@
   );
   grid-template-rows: repeat(4, 1fr);
   margin-bottom: 20rem;
-
+  @media only screen and (max-width: $medium-size) {
+    grid-template-columns: repeat(
+      2,
+      [col-start] minmax(30rem, min-content) [col-end]
+    );
+  }
+  @media only screen and (max-width: 600px) {
+    grid-template-columns: repeat(
+      1,
+      [col-start] minmax(30rem, min-content) [col-end]
+    );
+  }
   &__wheretonext {
     grid-column: col-start 1 / col-end 1;
     display: flex;
@@ -177,9 +226,13 @@
       font-weight: 700;
       width: 30rem;
     }
+    @media only screen and (max-width: $medium-size) {
+      display: none;
+    }
   }
   &__img {
     &__item--1 {
+      align-self: center;
       grid-column: col-start 1 / col-end 1;
 
       background-color: $light-text-color;
@@ -193,10 +246,12 @@
       background-color: $light-text-color;
     }
     &__item--4 {
+      align-self: center;
       grid-column: col-start 2 / col-end 2;
       background-color: $light-text-color;
     }
     &__item--5 {
+      align-self: center;
       grid-column: col-start 3 / col-end 3;
       background-color: $light-text-color;
     }
@@ -207,6 +262,34 @@
       background-image: url(../../static-img/popular1.jpg);
       background-size: cover;
     }
+    @media only screen and (max-width: $medium-size) {
+      &__item--1,
+      &__item--2,
+      &__item--3 {
+        display: none;
+      }
+      &__item--4 {
+        grid-column: col-start 1 / col-end 1;
+      }
+      &__item--5 {
+        grid-column: col-start 2 / col-end 2;
+      }
+      &__item--6 {
+        grid-column: col-start 1 / col-end 1;
+      }
+    }
+    @media only screen and (max-width: 600px) {
+      &__item--5 {
+        display: none;
+      }
+      &__item--6 {
+        grid-row: 1 / span 2;
+      }
+      &__item--4 {
+        grid-row: 4 / span 1;
+        justify-self: center;
+      }
+    }
   }
   &__explore {
     grid-column: col-start 3 / span 1;
@@ -215,13 +298,24 @@
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
+    @media only screen and (max-width: $medium-size) {
+      grid-column: col-start 2 / span 1;
+    }
+    @media only screen and (max-width: 600px) {
+      grid-column: col-start 1 / span 1;
+      grid-row: 3 / span 1;
+      align-items: center;
+      justify-content: center;
+
+      width: max-content;
+    }
 
     &__h2 {
       font-family: var(--roboto-font);
       font-size: 4rem;
       font-weight: 700;
       color: rgba($primary-text-color, 0.9);
-      width: 60%;
+      width: 100%;
       text-align: left;
       margin-bottom: 1rem;
     }
@@ -230,7 +324,7 @@
       font-size: 2.4rem;
       font-weight: 700;
       color: rgba($secondary-text-color, 1);
-      width: 60%;
+      width: 100%;
       text-align: left;
       margin-bottom: 1rem;
     }
@@ -269,13 +363,14 @@
 .button-explorer {
   font-family: var(--roboto-font);
   font-weight: 400;
+
   font-size: 2.4rem;
   display: flex;
   justify-content: center;
   align-items: center;
   color: #fff;
-  width: 22rem;
-  height: 6.4rem;
+  width: 20rem;
+  height: 6rem;
   border-color: solid #fff;
   border-radius: 2.4rem;
   background-image: linear-gradient(
@@ -283,9 +378,10 @@
     #a6158f 0%,
     rgba(226, 21, 143, 0.62) 40%
   );
+  border: none;
   transition: all 0.2s;
   &:hover {
-    transform: scale(1.03);
+    transform: scale(1.05);
     box-shadow: 0 1.5rem 2rem rgba($primary-text-color, 0.5);
   }
   &:active {
@@ -310,18 +406,20 @@
   z-index: 10;
 }
 
+/* 
 .image-holder {
   //width: 40rem;
-}
+} */
 
 .product {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(40rem, 1fr));
   justify-items: center;
   & > * {
-    &:not(:last-child) {
+    /* &:not(:last-child) {
       margin-bottom: 10rem;
-    }
+    } */
+    margin-bottom: 8rem;
   }
   &__container {
     display: flex;
@@ -335,8 +433,7 @@
     }
 
     &__img {
-      width: 20rem;
-      height: 30rem;
+      align-self: center;
     }
     &__kod {
       font-family: var(--roboto-font);
@@ -365,7 +462,14 @@
 }
 
 .products__page {
-  padding: 5% 15vh;
+  padding: 0 15vh;
+
+  @media only screen and (max-width: $medium-size) {
+    padding: 0 3vh;
+  }
+  @media only screen and (max-width: $small-size) {
+    padding: 0;
+  }
   &__h2 {
     text-align: center;
     font-weight: 700;

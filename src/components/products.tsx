@@ -14,6 +14,7 @@ const Products = (props: Props) => {
           width={200}
           height={300}
           alt={props.etiket}
+          style={{ objectFit: "contain" }}
         />
       </picture>
       <span className="product__container__kod">{props.kod}</span>

@@ -1,0 +1,22 @@
+@import "./mixins.scss";
+
+.media500absolute {
+  @include reset-position-insmall-screen;
+}
+
+.u-margin-bottom-mini {
+  :not(:last-child) {
+    margin-bottom: 1.3rem;
+  }
+
+  .u-margin-bottom-medium {
+    margin-bottom: 10rem;
+  }
+
+  //Hamburger Button Function
+  .hamburgerButton {
+    display: flex;
+    opacity: 1;
+    height: 100vh;
+  }
+}
