@@ -1,0 +1,8 @@
+// in small screen make it absolute
+
+@mixin reset-position-insmall-screen {
+  @media only screen and (max-width: $small-size) {
+    position: absolute;
+    margin-top: 10rem;
+  }
+}

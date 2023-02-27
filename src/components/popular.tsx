@@ -40,7 +40,10 @@ const Popular = () => {
         <h3 className="popular__explore__h3">
           Takılar içerisinde, size en çok yakışanı bulun.
         </h3>
-        <Button onClick={() => console.log("test")} buttonName={"Keşfet"}>
+        <Button
+          onClick={() => console.log("explorerButton")}
+          buttonName={"Keşfet"}
+        >
           KEŞFET &rarr;
         </Button>
       </div>

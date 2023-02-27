@@ -1,0 +1,146 @@
+.sidebar {
+  z-index: 300;
+  &__checkbox {
+    display: none;
+  }
+  &__navigationvisible {
+    opacity: 1 !important;
+    height: 100vh !important;
+  }
+  &__navigation {
+    opacity: 0;
+    display: flex;
+    backdrop-filter: blur(15px);
+    background-image: linear-gradient(
+      to right,
+      rgba($primary-color, 0.2),
+      rgba($tertiary-color, 0.4)
+    );
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 0;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.4s ease-in-out;
+    overflow: hidden;
+    &__list {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      &__item {
+        &__items {
+          padding: 2rem;
+          font-size: 6rem;
+          font-weight: 400;
+          list-style: none;
+          color: $light-text-color;
+          transition: all 0.3s;
+          background-size: 230%;
+          background-image: linear-gradient(
+            120deg,
+            transparent 0%,
+            transparent 50%,
+            rgba(#fff, 1) 50%
+          );
+
+          &:not(:last-child) {
+            margin-bottom: 4rem;
+          }
+          &:hover,
+          &:active {
+            background-position: 100%;
+
+            transform: translateX(1rem);
+          }
+          &:active,
+          &:hover > &__link {
+            span {
+              color: $primary-text-color;
+            }
+          }
+          &__link {
+            text-decoration: none;
+            span {
+              font-weight: 400;
+              color: #fff;
+            }
+          }
+        }
+      }
+    }
+  }
+  &__navigation:hover ~ &__hamburger-menu {
+    background-color: aqua;
+    color: green($color: #000000);
+  }
+  //not working code
+  /* &__checkbox:checked ~ &__navigation {
+    display: flex;
+    height: 100vh;
+  } */
+
+  &__checkbox:checked + &__hamburger-menu &__hamburger-menu__line {
+    background-color: transparent;
+  }
+  &__checkbox:checked + &__hamburger-menu > &__hamburger-menu__line::after {
+    top: 0;
+    transform: rotate(45deg);
+  }
+  &__checkbox:checked + &__hamburger-menu > &__hamburger-menu__line::before {
+    top: 0;
+    transform: rotate(-45deg);
+  }
+  &__checkbox:checked + &__hamburger-menu > &__hamburger-menu__line::before,
+  &__checkbox:checked + &__hamburger-menu > &__hamburger-menu__line::after {
+    transition: all 0.2s;
+  }
+
+  &__hamburger-menu {
+    display: none;
+    z-index: 10;
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+    position: relative;
+
+    @media only screen and (max-width: 900px) {
+      grid-column: 0/1;
+      display: inline-block;
+    }
+    &:hover &__line::after {
+      transition: all 0.2s;
+      top: 0.9rem;
+    }
+    &:hover &__line::before {
+      transition: all 0.2s;
+      top: -0.9rem;
+    }
+
+    &__line {
+      top: 1.8rem;
+      left: 1rem;
+      position: absolute;
+      display: inline-block;
+      position: relative;
+      background-color: $primary-text-color;
+      width: 3rem;
+      height: 2px;
+      &::after,
+      &::before {
+        content: "";
+        position: absolute;
+        width: 3rem;
+        height: 2px;
+        background-color: $primary-text-color;
+      }
+      &::after {
+        top: 0.7rem;
+      }
+      &::before {
+        top: -0.7rem;
+      }
+    }
+  }
+}

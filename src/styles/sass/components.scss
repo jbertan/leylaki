@@ -50,17 +50,17 @@
   &__takilar {
     text-decoration: none;
     font-size: 1.6rem;
-    font-weight: 700;
+    font-weight: 400;
     text-transform: uppercase;
     grid-column: col-start 9 / col-end 9;
-    color: $primary-text-color;
+    color: rgba($primary-text-color, 0.6);
     justify-self: center;
     cursor: pointer;
     transition: all 0.1s;
     position: relative;
     &:hover {
       box-shadow: 0 1.5rem 2rem rgba(0, 0, 0, 0.2);
-      transform: scale(1.04);
+      transform: scale(1.02);
       &::after {
         opacity: 1;
       }
@@ -68,9 +68,10 @@
     @media only screen and (max-width: 900px) {
       display: none;
     }
+
     &:active {
       box-shadow: 0 1.5rem 2rem rgba(0, 0, 0, 0.2);
-      transform: scale(1.01);
+      transform: scale(1);
     }
 
     &::after {
@@ -82,26 +83,30 @@
       width: 100%;
       opacity: 0;
       z-index: 1;
-      border-bottom: solid 2px $primary-text-color;
-      transition: all 0.8s;
+      border-bottom: solid 1px $primary-text-color;
+      transition: all 0.4s;
     }
   }
   &__hediyelik-esyalar {
     text-decoration: none;
     font-size: 1.6rem;
-    font-weight: 700;
+    font-weight: 400;
     text-transform: uppercase;
     grid-column: col-start 10 / col-end 11;
-    color: $primary-text-color;
+    color: rgba($primary-text-color, 0.6);
     justify-self: center;
     transition: all 0.1s;
     position: relative;
     &:hover {
       box-shadow: 0 1.5rem 2rem rgba(0, 0, 0, 0.2);
-      transform: scale(1.04);
+      transform: scale(1.02);
       &::after {
         opacity: 1;
       }
+    }
+    &:active {
+      box-shadow: 0 1.5rem 2rem rgba(0, 0, 0, 0.2);
+      transform: scale(1);
     }
     @media only screen and (max-width: $tablet-size) {
       display: none;
@@ -120,8 +125,8 @@
       width: 100%;
       opacity: 0;
       z-index: 1;
-      border-bottom: solid 2px $primary-text-color;
-      transition: all 0.8s;
+      border-bottom: solid 1px $primary-text-color;
+      transition: all 0.4s;
     }
   }
 }
@@ -413,22 +418,53 @@
 
 .product {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(40rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
   justify-items: center;
+  @media only screen and (max-width: $small-size) {
+    grid-template-columns: repeat(auto-fit, minmax(41rem, 1fr));
+  }
   & > * {
     /* &:not(:last-child) {
       margin-bottom: 10rem;
     } */
-    margin-bottom: 8rem;
+    margin-bottom: 6rem;
   }
   &__container {
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    padding: 2rem;
+    border-bottom: 4px solid transparent;
+    border-radius: 3px;
+    box-shadow: 1rem 1rem 4rem rgba($primary-text-color, 0.3);
+    backface-visibility: hidden;
+    transition: all 0.4s;
+    //box-shadow: inset 0rem 1rem 1rem rgba($primary-text-color, 0.3);
+
+    /* &::before {
+      position: absolute;
+      content: "TEST";
+      top: 0;
+      left: 0;
+      background-color: #a6158f;
+      width: 100%;
+      height: 100%;
+      transform: rotateY(180deg);
+      //backface-visibility: hidden;
+    } */
+    &:hover {
+      transform: scale(1.08);
+      border-bottom: 4px solid #a6158f;
+      box-shadow: 1rem 1rem 4rem rgba($primary-color, 0.3);
+    }
 
     & > * {
       &:not(:last-child) {
         margin-bottom: 1.5rem;
+      }
+      &:not(:first-child) {
+        border-bottom: 1px solid rgba($input-border-color, 0.7);
       }
     }
 
@@ -437,16 +473,16 @@
     }
     &__kod {
       font-family: var(--roboto-font);
-      font-weight: 700;
-      font-size: 4rem;
-      line-height: 4.6rem;
+      font-weight: 400;
+      font-size: 1.5rem;
+      //line-height: 4.6rem;
       color: rgba($tertiary-color, 0.8);
     }
     &__etiket {
       font-family: var(--roboto-font);
-      font-weight: 700;
-      font-size: 4rem;
-      line-height: 4.6rem;
+      font-weight: 200;
+      font-size: 2rem;
+      //line-height: 4.6rem;
       color: rgba($primary-text-color, 1);
     }
   }
@@ -472,10 +508,11 @@
   }
   &__h2 {
     text-align: center;
-    font-weight: 700;
-    font-size: 4rem;
+    font-weight: 400;
+    text-transform: uppercase;
+    font-size: 3rem;
     line-height: 4.6rem;
-    color: $primary-text-color;
+    color: rgba($primary-text-color, 0.7);
     font-family: var(--roboto-font);
     margin-bottom: 10rem;
   }

@@ -1,7 +1,7 @@
 import Button from "./button";
 const Carousel = () => {
   const onSubmitEvent = () => {
-    console.log("selam");
+    console.log("kolleksiyontest");
   };
   return (
     <div className="carousel">

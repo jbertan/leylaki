@@ -43,7 +43,7 @@ const Taki: NextPage<Props> = ({ products }) => {
         <SideBar />
       </div>
       <main className="products__page">
-        <h2 className="products__page__h2">KOLYELER</h2>
+        <h2 className="products__page__h2">Takılar</h2>
         <section className="product u-margin-bottom-medium">
           {products.map((product, i) => (
             <Products
