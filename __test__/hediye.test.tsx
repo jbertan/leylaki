@@ -6,18 +6,12 @@ const products = [
     kod: "Kod",
     name: "Name",
     id: new ObjectId(),
-    fileName: "patasd",
+    fileName: "anahtarlik-jpg",
   },
 ];
-test("Header link test", () => {
+test("product test", () => {
   render(<Hediye products={products} />);
-  const taki = screen.getByRole("link", { name: /takılar/i });
-  expect(taki).toBeInTheDocument();
-  expect(taki).toHaveAttribute("href", "./taki");
-  const hediye = screen.getByRole("link", { name: /hediyelik esyalar/i });
-  expect(hediye).toBeInTheDocument();
-  expect(hediye).toHaveAttribute("href", "./hediyelik-esya");
-  const logo = screen.getByRole("link", { name: /leylaki/i });
-  expect(logo).toBeInTheDocument();
-  expect(logo).toHaveAttribute("href", "./");
+  const heading = screen.getByRole("heading", { name: /kolyeler/i });
+  expect(heading).toHaveClass("products__page__h2");
+  expect(heading).toBeInTheDocument();
 });

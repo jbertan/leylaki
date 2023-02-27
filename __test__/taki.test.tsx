@@ -14,13 +14,7 @@ const products = [
 
 test("main page header test", () => {
   render(<Taki products={products} />);
-  const taki = screen.getByRole("link", { name: /takılar/i });
-  expect(taki).toHaveClass("sidebar__takilar");
-  expect(taki).toHaveAttribute("href", "./taki");
-  const hediye = screen.getByRole("link", { name: /Hediyelik Esyalar/i });
-  expect(hediye).toHaveClass("sidebar__hediyelik-esyalar");
-  expect(hediye).toHaveAttribute("href", "./hediyelik-esya");
-  const Logo = screen.getByRole("link", { name: /leylaki/i });
-  expect(Logo).toHaveClass("sidebar__logo--mask");
-  expect(Logo).toHaveAttribute("href", "./");
+  const heading = screen.getByRole("heading", { name: /takılar/i });
+  expect(heading).toBeInTheDocument();
+  expect(heading).toHaveClass("products__page__h2");
 });

@@ -57,7 +57,7 @@ const SideBar = () => {
           Leylaki
         </a>
       </picture>
-      <a href="/taki" className="sidebar__takilar">
+      <a href="/taki" className="sidebar__takilar" data-testid="taki">
         Takılar
       </a>
       <a href="/hediyelik-esya" className="sidebar__hediyelik-esyalar">
