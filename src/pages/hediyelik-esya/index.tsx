@@ -34,6 +34,7 @@ interface Props {
 }
 
 const HediyelikEsya: NextPage<Props> = ({ products }) => {
+  console.log(products);
   return (
     <div className={roboto.variable}>
       <Head>
@@ -91,6 +92,7 @@ export const getStaticProps: GetStaticProps = async () => {
   const a = await Promise.all(prom).then(function (products) {
     return products;
   });
+  console.log(a);
   return { props: { products: a }, revalidate: 60 };
 };
 export default HediyelikEsya;
