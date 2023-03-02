@@ -1,7 +1,4 @@
 import { S3 } from "aws-sdk";
-require("dotenv").config();
-import formidable, { File } from "formidable";
-import fs from "fs";
 const bucketName = "leylaki-img";
 const region = "eu-central-1";
 const accessKeyId = "AKIAVVOEUPZ6VSWTX4A3";
@@ -26,7 +23,6 @@ export const _Client = () => {
 
 export const uploadImage = async ({ key, body }: uploadImage) => {
   const s3 = _Client();
-
   await s3
     .upload({
       Bucket: bucketName as string,
