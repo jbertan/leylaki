@@ -91,6 +91,7 @@ export const getStaticProps: GetStaticProps = async () => {
   const a = await Promise.all(prom).then(function (products) {
     return products;
   });
+  console.log(a);
   return { props: { products: a }, revalidate: 60 };
 };
 export default HediyelikEsya;
