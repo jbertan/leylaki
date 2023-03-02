@@ -1,4 +1,6 @@
+
 import { S3 } from "aws-sdk";
+
 require("dotenv").config();
 import formidable, { File } from "formidable";
 import fs from "fs";
@@ -16,7 +18,15 @@ interface getImage {
   alt: string;
 }
 export const _Client = () => {
-  const s3Client = new S3({
+  AWS.config.update({
+    region: region,
+    apiVersion: "latest",
+    credentials: {
+      accessKeyId: accessKeyId!,
+      secretAccessKey: secretAccessKey!,
+    },
+  });
+  const s3Client = new AWS.S3({
     region,
     accessKeyId,
     secretAccessKey,
