@@ -9,6 +9,14 @@ const nextConfig = {
   env: {
     SECRET: process.env.SECRET,
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "leylaki-img.s3.eu-central-1.amazonaws.com",
+      },
+    ],
+  },
 };
 
 module.exports = nextConfig;

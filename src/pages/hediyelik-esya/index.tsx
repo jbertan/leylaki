@@ -6,7 +6,8 @@ import picture2 from "../../static-img/popular2.jpg";
 import { Roboto } from "@next/font/google";
 import { GetStaticProps, NextPage } from "next";
 import fs from "fs/promises";
-import path from "path";
+import path, { resolve } from "path";
+import { getImage } from "@/components/util/connectAws";
 import { _Client } from "@/components/util/connectDb";
 import { ObjectId } from "mongodb";
 import { getAllProducts } from "@/components/util/connectDb";
@@ -26,13 +27,13 @@ interface iProduct {
   name: string;
   id: ObjectId;
   fileName: string;
+  newFilename: string;
 }
 interface Props {
   products: iProduct[];
 }
 
 const HediyelikEsya: NextPage<Props> = ({ products }) => {
-  console.log(products);
   return (
     <div className={roboto.variable}>
       <Head>
@@ -52,7 +53,7 @@ const HediyelikEsya: NextPage<Props> = ({ products }) => {
               //Key =i not acceptable chaged to ObjectId first need to convert to string
               <Products
                 key={i}
-                picture={`/images/products/${product.fileName}`}
+                picture={`${product.newFilename}`}
                 kod={product.kod}
                 etiket={product.name}
               />
@@ -70,9 +71,26 @@ const HediyelikEsya: NextPage<Props> = ({ products }) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
+  interface iProduct {
+    kod: string;
+    name: string;
+    id: ObjectId;
+    fileName: string;
+  }
   const hediye = "hediye";
-  const products = await getAllProducts(_Categories.hediye);
-  console.log(products);
-  return { props: { products }, revalidate: 60 };
+  const products = (await getAllProducts(_Categories.hediye)) as iProduct;
+  //@ts-ignore
+  const prom = products.map((product) => {
+    return getImage({ src: product.fileName, alt: product.fileName }).then(
+      (result) => {
+        product.newFilename = result;
+        return product;
+      }
+    );
+  });
+  const a = await Promise.all(prom).then(function (products) {
+    return products;
+  });
+  return { props: { products: a }, revalidate: 60 };
 };
 export default HediyelikEsya;
