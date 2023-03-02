@@ -1,9 +1,4 @@
-
 import { S3 } from "aws-sdk";
-
-require("dotenv").config();
-import formidable, { File } from "formidable";
-import fs from "fs";
 const bucketName = "leylaki-img";
 const region = "eu-central-1";
 const accessKeyId = "AKIAVVOEUPZ6VSWTX4A3";
@@ -18,15 +13,7 @@ interface getImage {
   alt: string;
 }
 export const _Client = () => {
-  AWS.config.update({
-    region: region,
-    apiVersion: "latest",
-    credentials: {
-      accessKeyId: accessKeyId!,
-      secretAccessKey: secretAccessKey!,
-    },
-  });
-  const s3Client = new AWS.S3({
+  const s3Client = new S3({
     region,
     accessKeyId,
     secretAccessKey,
@@ -36,7 +23,6 @@ export const _Client = () => {
 
 export const uploadImage = async ({ key, body }: uploadImage) => {
   const s3 = _Client();
-
   await s3
     .upload({
       Bucket: bucketName as string,
