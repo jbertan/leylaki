@@ -6,7 +6,7 @@ import { GetStaticProps, NextPage } from "next";
 import { getAllProducts } from "@/components/util/connectDb";
 import { ObjectId } from "mongodb";
 import fs from "fs/promises";
-import path from "path";
+import { getImage } from "@/components/util/connectAws";
 import SideBar from "@/components/sidebar";
 import Footer from "@/components/footer";
 enum _Categories {
@@ -25,6 +25,7 @@ interface iProduct {
   name: string;
   id: ObjectId;
   fileName: string;
+  newFilename: string;
 }
 interface Props {
   products: iProduct[];
@@ -48,7 +49,7 @@ const Taki: NextPage<Props> = ({ products }) => {
           {products.map((product, i) => (
             <Products
               key={i}
-              picture={`/images/products/${product.fileName}`}
+              picture={product.newFilename}
               kod={product.kod}
               etiket={product.name}
             />
@@ -66,8 +67,26 @@ const Taki: NextPage<Props> = ({ products }) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const products = await getAllProducts(_Categories.taki);
-  console.log(products);
-  return { props: { products }, revalidate: 60 };
+  interface iProduct {
+    kod: string;
+    name: string;
+    id: ObjectId;
+    fileName: string;
+  }
+  const hediye = "hediye";
+  const products = (await getAllProducts(_Categories.taki)) as iProduct;
+  //@ts-ignore
+  const prom = products.map((product) => {
+    return getImage({ src: product.fileName, alt: product.fileName }).then(
+      (result) => {
+        product.newFilename = result;
+        return product;
+      }
+    );
+  });
+  const prod = await Promise.all(prom).then(function (products) {
+    return products;
+  });
+  return { props: { products: prod }, revalidate: 60 };
 };
 export default Taki;
