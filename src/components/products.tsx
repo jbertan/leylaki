@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { getImage } from "./util/connectAws";
 interface Props {
   picture: any;
   kod: string;

@@ -15,9 +15,9 @@ enum _Categories {
 }
 
 interface iProduct {
-  kod: string;
-  name: string;
-  fileName: string;
+  kod: string | string[];
+  name: string | string[];
+  fileName: string | string[];
   categories: string;
 }
 interface iCategories {

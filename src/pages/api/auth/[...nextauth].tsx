@@ -10,9 +10,11 @@ interface data1 {
   password: string;
 }
 export const authOptions: NextAuthOptions = {
+  session: { strategy: "jwt" },
+
   providers: [
     CredentialsProvider({
-      secret: process.env.SECRET,
+      /* secret: process.env.SECRET,
       session: {
         // Use JSON Web Tokens for session instead of database sessions.
         // This option can be used with or without a database for users/accounts.
@@ -40,7 +42,7 @@ export const authOptions: NextAuthOptions = {
         // if you want to override the default behaviour.
         // encode: async ({ secret, token, maxAge }) => {},
         // decode: async ({ secret, token, maxAge }) => {},
-      },
+      }, */
       // The name to display on the sign in form (e.g. "Sign in with...")
       //name: "Credentials",
       // The credentials is used to generate a suitable form on the sign in page.
@@ -86,7 +88,7 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
-  secret: process.env.SECRET,
+  secret: process.env.NEXTAUTH_SECRET,
 };
 
 export default NextAuth(authOptions);
