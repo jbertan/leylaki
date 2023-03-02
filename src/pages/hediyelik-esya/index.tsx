@@ -34,6 +34,7 @@ interface Props {
 }
 
 const HediyelikEsya: NextPage<Props> = ({ products }) => {
+  console.log(products);
   return (
     <div className={roboto.variable}>
       <Head>

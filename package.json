@@ -19,6 +19,7 @@
     "aws-sdk": "^2.729.0",
     "axios": "^1.3.2",
     "bcryptjs": "^2.4.3",
+    "dotenv": "^16.0.3",
     "formidable": "^2.1.1",
     "mongodb": "5.0",
     "next": "13.1.6",
