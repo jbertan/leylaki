@@ -1,21 +1,17 @@
 import Head from "next/head";
 import SideBar from "@/components/sidebar";
 import Footer from "@/components/footer";
-
-import picture2 from "../../static-img/popular2.jpg";
 import { Roboto } from "@next/font/google";
 import { GetServerSideProps, NextPage } from "next";
-import fs from "fs/promises";
-import path from "path";
+import { _Categories } from "@/components/util/type";
 import { _Client } from "@/components/util/connectDb";
 import { ObjectId } from "mongodb";
 import { getAllProducts } from "@/components/util/connectDb";
 import EditProducts from "@/components/EditProducts";
-enum _Categories {
-  all = "all",
-  hediye = "hediye",
-  taki = "taki",
-}
+import { getImage } from "@/components/util/connectAws";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
+
 const roboto = Roboto({
   weight: ["100", "400", "700", "900"],
   style: "normal",
@@ -29,6 +25,7 @@ interface iProduct {
   _id: ObjectId;
   fileName: string;
   categories: _Categories;
+  newFilename: string;
 }
 interface Props {
   products: iProduct[];
@@ -55,7 +52,8 @@ const EditPage: NextPage<Props> = ({ products }) => {
               //Key =i not acceptable chaged to ObjectId first need to convert to string
               <EditProducts
                 key={i}
-                picture={`/images/products/${product.fileName}`}
+                picture={product.newFilename}
+                fileName={product.fileName}
                 kod={product.kod}
                 etiket={product.name}
                 checkboxId={i}
@@ -70,10 +68,37 @@ const EditPage: NextPage<Props> = ({ products }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  const hediye = "hediye";
-  const products = await getAllProducts(_Categories.all);
-  console.log(products);
-  return { props: { products } };
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getServerSession(context.req, context.res, authOptions);
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+  interface iProduct {
+    kod: string;
+    name: string;
+    id: ObjectId;
+    fileName: string;
+    newFilename: string;
+  }
+  const products = (await getAllProducts(_Categories.all)) as iProduct[];
+
+  const response = products.map((product) => {
+    return getImage({ src: product.fileName, alt: product.fileName }).then(
+      (result) => {
+        //@ts-ignore
+        product.newFilename = result;
+        return product;
+      }
+    );
+  });
+  const result = await Promise.all(response).then(function (response) {
+    return response;
+  });
+  return { props: { products: result } };
 };
 export default EditPage;

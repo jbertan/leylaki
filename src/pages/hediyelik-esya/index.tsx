@@ -5,16 +5,12 @@ import Products from "../../components/products";
 import picture2 from "../../static-img/popular2.jpg";
 import { Roboto } from "@next/font/google";
 import { GetStaticProps, NextPage } from "next";
-import fs from "fs/promises";
-import path, { resolve } from "path";
+import { _Categories } from "@/components/util/type";
 import { getImage } from "@/components/util/connectAws";
 import { _Client } from "@/components/util/connectDb";
 import { ObjectId } from "mongodb";
 import { getAllProducts } from "@/components/util/connectDb";
-enum _Categories {
-  hediye = "hediye",
-  taki = "taki",
-}
+
 const roboto = Roboto({
   weight: ["100", "400", "700", "900"],
   style: "normal",

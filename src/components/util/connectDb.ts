@@ -3,15 +3,11 @@ global.TextDecoder = require("util").TextDecoder;
 import { IproductUpdate, IproductDelete } from "./type";
 import { ObjectId } from "mongodb";
 import { MongoClient } from "mongodb";
+import { _Categories } from "./type";
 enum _Db {
   database = "leylaki",
   products = "products",
   admin = "admin",
-}
-enum _Categories {
-  all = "all",
-  hediye = "hediye",
-  taki = "taki",
 }
 
 interface iProduct {
@@ -52,7 +48,7 @@ export const BuildProduct = async ({
   }
 };
 //typescript touch needed
-export const getAllProducts = async (categories: categoryType) => {
+export const getAllProducts = async (categories: _Categories) => {
   const client = _Client();
   try {
     const db = client.db(_Db.database);
