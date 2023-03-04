@@ -1,7 +1,7 @@
 import { ObjectId } from "mongodb";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import testImage from "../static-img/popular2.jpg";
+import { _Categories } from "./util/type";
 
 interface props {
   checkboxId: number;
@@ -10,15 +10,11 @@ interface props {
   picture: string;
   categories: _Categories;
   _id: ObjectId;
-}
-enum _Categories {
-  all = "all",
-  hediye = "hediye",
-  taki = "taki",
+  fileName: string;
 }
 
 const EditProducts = (props: props) => {
-  const { checkboxId, kod, etiket, picture, categories, _id } = props;
+  const { checkboxId, kod, etiket, picture, categories, _id, fileName } = props;
   const [categoriesCheckBox, setCategoriesCheckBox] = useState<_Categories>(
     _Categories.all
   );
@@ -52,7 +48,7 @@ const EditProducts = (props: props) => {
         method: "PUT",
         body: JSON.stringify({
           _id,
-          picture,
+          fileName,
         }),
         headers: { "Content-Type": "application/json" },
       }

@@ -14,6 +14,9 @@ interface getImage {
   src: string;
   alt: string;
 }
+interface IdeleteImage {
+  key: string;
+}
 export const _Client = () => {
   const s3Client = new S3({
     region,
@@ -48,18 +51,15 @@ export const getImage = async ({ src, alt }: getImage) => {
   } catch (error) {
     console.log(error);
   }
-  /* s3.getSignedUrlPromise("getObject", params)
-    .then((picture) => {
-      return picture;
-    })
-    .catch((err) => console.log(err)); */
 };
-/* const uploadedImage = await s3
-  .upload({
-    Bucket: bucketName as string,
-    Key: "test.jpg",
-    Body: "File Content",
-  })
-  .promise()
-  .then((data) => console.log(data));
- */
+
+export const deleteImage = async ({ key }: IdeleteImage) => {
+  const s3 = _Client();
+  const response = await s3
+    .deleteObject({
+      Bucket: bucketName as string,
+      Key: key,
+    })
+    .promise();
+  return response;
+};

@@ -1,10 +1,8 @@
 import { GetServerSideProps, NextPage } from "next";
 import { useState, useRef, useReducer } from "react";
-import axios from "axios";
 import { getSession, useSession } from "next-auth/react";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "../../api/auth/[...nextauth]";
-import { Session } from "next-auth";
 import { Roboto } from "@next/font/google";
 import Head from "next/head";
 import Categories from "../../../helper/categories";
@@ -264,6 +262,15 @@ const UploadFile: NextPage<Props> = () => {
   );
 };
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = getServerSession(context.req, context.res, authOptions);
+  /* if (session && session !== null) {
+    return {
+      redirect: {
+        destination: "/admin/upload",
+        permanent: false,
+      },
+    };
+  } */
   return {
     props: {
       session: await getSession(context),
