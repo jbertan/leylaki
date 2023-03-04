@@ -32,7 +32,7 @@ const EditProducts = (props: props) => {
           kod: updateKod,
           etiket: updateEtiket,
           categories: categoriesCheckBox,
-          picture,
+          fileName,
         }),
         headers: { "Content-Type": "application/json" },
       }

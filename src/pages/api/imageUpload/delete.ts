@@ -7,9 +7,9 @@ const Delete = async (req: NextApiRequest, res: NextApiResponse) => {
   const { _id, fileName } = req.body;
   console.log(fileName);
   try {
-    const result = await productDelete({ _id: new ObjectId(_id) });
-    const responseAws = await deleteImage({ key: fileName });
-    res.status(200).json(responseAws);
+    productDelete({ _id: new ObjectId(_id) }).then((result) => result);
+    deleteImage({ key: fileName }).then((result) => result);
+    res.status(200).json({ message: "Done" });
   } catch (error) {
     res.status(500).json({ error });
   }
