@@ -1,9 +1,5 @@
 import axios from "axios";
-enum _Categories {
-  hediye = "hediye",
-  taki = "taki",
-  null = "",
-}
+import { _Categories } from "@/components/util/type";
 interface Props {
   categories: _Categories;
   file: File;
@@ -25,10 +21,15 @@ const Categories = async ({ categories, file, kod, name }: Props) => {
     formData.append("file", file);
     formData.append("kod", kod);
     formData.append("name", name);
+    console.log("Last items");
+
     if (categories === _Categories.hediye) {
+      console.log("Last hediye");
       const { data } = await axios.post("/api/imageUpload/hediye", formData);
       console.log(data);
-    } else if (categories === _Categories.taki) {
+    }
+    if (categories === _Categories.taki) {
+      console.log("Last takı");
       const { data } = await axios.post("/api/imageUpload/taki", formData);
       console.log(data);
     } else return;

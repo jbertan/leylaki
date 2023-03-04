@@ -1,5 +1,5 @@
 import { GetServerSideProps, NextPage } from "next";
-import { useState, useRef } from "react";
+import { useState, useRef, useReducer } from "react";
 import axios from "axios";
 import { getSession, useSession } from "next-auth/react";
 import { getServerSession } from "next-auth/next";
@@ -8,12 +8,14 @@ import { Session } from "next-auth";
 import { Roboto } from "@next/font/google";
 import Head from "next/head";
 import Categories from "../../../helper/categories";
+import { _Categories } from "@/components/util/type";
+import {
+  validateReducer,
+  threshold,
+  initialState,
+  ACTIONTYPE,
+} from "@/components/state-management/reducer";
 
-enum _Categories {
-  taki = "taki",
-  hediye = "hediye",
-  null = "",
-}
 interface Props {
   //dirs: string[];
 }
@@ -27,42 +29,69 @@ const roboto = Roboto({
 const UploadFile: NextPage<Props> = () => {
   const [uploading, setUploading] = useState(false);
   const [selectedImage, setSelectedImage] = useState("");
-  const [selectedFile, setSelectedFile] = useState<File>();
-  const [kategori, setKategori] = useState<_Categories>(_Categories.null);
+  const [validate, dispatch] = useReducer(validateReducer, initialState);
   const { data: session } = useSession();
+  /*  console.log(validate.file, validate.kategori, validate.kod, validate.name);
+  console.log(
+    validate.fileValue,
+    validate.kategoriValue,
+    validate.kodValue,
+    validate.nameValue
+  );   console.log(validate.valid);*/
 
-  const kodRef = useRef<HTMLInputElement>(null);
-  const nameRef = useRef<HTMLInputElement>(null);
-
+  //Session serverside a taşınacak
   if (session) {
     console.log("Wilcommen Sir");
   } else {
     return <div>No More Enter No</div>;
   }
 
-  const testRef = () => {
+  if (
+    validate.kodValue !== "" &&
+    validate.nameValue !== "" &&
+    validate.fileValue !== null &&
+    validate.kategoriValue !== undefined
+  ) {
+    !validate.valid && dispatch({ type: threshold.valid });
+  } else {
+    validate.valid && dispatch({ type: threshold.invalid });
+  }
+  const validateInput = () => {
+    if (validate.file === undefined) {
+      dispatch({ type: threshold.invalidFile });
+    }
+    if (validate.kategori === undefined) {
+      dispatch({ type: threshold.invalidKategori });
+    }
+    if (validate.kod === undefined) {
+      dispatch({ type: threshold.invalidKod });
+    }
+    if (validate.name === undefined) {
+      dispatch({ type: threshold.invalidName });
+    }
+  };
+  const submitHandler = async () => {
+    console.log("submşt handler");
     setUploading(true);
-    console.log(kategori);
-    const kod = kodRef.current?.value;
-    const name = nameRef.current?.value;
-    if (selectedFile != null && kategori != "" && kod != null && name != null) {
-      Categories({
-        categories: kategori,
-        file: selectedFile,
-        kod,
-        name,
+    if (validate.valid) {
+      console.log("Texas");
+      console.log(
+        validate.fileValue,
+        validate.kategoriValue,
+        validate.kodValue,
+        validate.nameValue
+      );
+      await Categories({
+        categories: validate.kategoriValue!,
+        file: validate.fileValue,
+        kod: validate.kodValue,
+        name: validate.nameValue,
       });
+      dispatch({ type: threshold.resetAll });
     }
     setUploading(false);
-    setSelectedFile(undefined);
-    setSelectedImage("");
 
-    if (nameRef.current) {
-      nameRef.current.value = "";
-    }
-    if (kodRef.current) {
-      kodRef.current.value = "";
-    }
+    setSelectedImage("");
   };
 
   return (
@@ -80,7 +109,11 @@ const UploadFile: NextPage<Props> = () => {
             Upload pictures you want to share and add details
           </p>
           <div className="upload__container__draganddrops">
-            <label className="upload__container__draganddrops__selectedfile ">
+            <label
+              className={`upload__container__draganddrops__selectedfile ${
+                validate.file === false && "invalid__input"
+              }`}
+            >
               <input
                 type="file"
                 hidden
@@ -88,7 +121,7 @@ const UploadFile: NextPage<Props> = () => {
                   if (target.files) {
                     const file = target.files[0];
                     setSelectedImage(URL.createObjectURL(file));
-                    setSelectedFile(file);
+                    dispatch({ type: threshold.validFile, payload: file });
                   }
                 }}
               />
@@ -104,17 +137,23 @@ const UploadFile: NextPage<Props> = () => {
               <use href="/images/sprite.svg#icon-cloud-upload"></use>
             </svg>
             <p className="upload__container__draganddrops__explanation">
-              Drag and drop files here
+              Resim Yüklemek için Dokun
             </p>
             <p className="upload__container__draganddrops__explanation">
-              - OR -
+              - & -
             </p>
             <button
-              onClick={testRef}
-              className="upload__container__draganddrops__button"
+              onClick={
+                validate.valid ? () => submitHandler() : () => validateInput()
+              }
+              /*  */
+              className={`upload__container__draganddrops__button  ${
+                validate.valid && "button__next"
+              }`}
             >
-              Browse Files
+              {!validate.valid ? "Bilgileri Gir" : "Onaylandı"}
             </button>
+            <div>{validate.kod}</div>
           </div>
           <div className="upload__container__uploadfiles">
             <h3 className="upload__container__uploadfiles__heading">
@@ -122,9 +161,19 @@ const UploadFile: NextPage<Props> = () => {
             </h3>
             <div className="upload__container__uploadfiles__labelinput">
               <input
-                ref={kodRef}
+                value={validate.kodValue}
+                onChange={(e) =>
+                  dispatch({
+                    type: threshold.validKod,
+                    payload: e.target.value,
+                  })
+                }
                 type="text"
-                className="upload__container__uploadfiles__labelinput__input"
+                className={`upload__container__uploadfiles__labelinput__input ${
+                  validate.kod !== undefined &&
+                  validate.kodValue === "" &&
+                  "invalid__input"
+                }`}
                 placeholder="Kod:"
               />
               <label
@@ -136,9 +185,19 @@ const UploadFile: NextPage<Props> = () => {
             </div>
             <div className="upload__container__uploadfiles__labelinput">
               <input
-                ref={nameRef}
+                onChange={(e) =>
+                  dispatch({
+                    type: threshold.validName,
+                    payload: e.target.value,
+                  })
+                }
+                value={validate.nameValue}
                 type="text"
-                className="upload__container__uploadfiles__labelinput__input"
+                className={`upload__container__uploadfiles__labelinput__input ${
+                  validate.name !== undefined &&
+                  validate.nameValue === "" &&
+                  "invalid__input"
+                }`}
                 placeholder="Name:"
                 id="name"
               />
@@ -150,7 +209,13 @@ const UploadFile: NextPage<Props> = () => {
               </label>
             </div>
             <div className="upload__container__uploadfiles__container">
-              <button className="upload__container__uploadfiles__button">
+              <button
+                className={`upload__container__uploadfiles__button ${
+                  (validate.kategori !== undefined &&
+                    validate.kategoriValue === "") ||
+                  (validate.kategori === false && "invalid__input")
+                } `}
+              >
                 <svg className="upload__container__uploadfiles__button__svg">
                   <use href="/images/sprite.svg#icon-circle-down"></use>
                 </svg>
@@ -161,7 +226,14 @@ const UploadFile: NextPage<Props> = () => {
                   <input
                     name="Kategori"
                     type="radio"
-                    onChange={(e) => setKategori(_Categories.hediye)}
+                    checked={validate.checked === 1}
+                    //onChange={(e) => setKategori(_Categories.hediye)}
+                    onChange={() =>
+                      dispatch({
+                        type: threshold.validKategori,
+                        payload: { categories: _Categories.hediye, checked: 1 },
+                      })
+                    }
                     value={_Categories.hediye}
                     className="upload__container__uploadfiles__dropdown__single--items"
                   />
@@ -171,7 +243,13 @@ const UploadFile: NextPage<Props> = () => {
                   <input
                     name="Kategori"
                     type="radio"
-                    onChange={(e) => setKategori(_Categories.taki)}
+                    onChange={() =>
+                      dispatch({
+                        type: threshold.validKategori,
+                        payload: { categories: _Categories.taki, checked: 2 },
+                      })
+                    }
+                    checked={validate.checked === 2}
                     value={_Categories.taki}
                     className="upload__container__uploadfiles__dropdown__single--items"
                   />
@@ -184,36 +262,6 @@ const UploadFile: NextPage<Props> = () => {
       </section>
     </div>
   );
-  /* return(<div className="square-basic">
-      <label>
-        <input
-          type="file"
-          hidden
-          onChange={({ target }) => {
-            if (target.files) {
-              const file = target.files[0];
-              setSelectedImage(URL.createObjectURL(file));
-              setSelectedFile(file);
-            }
-          }}
-        />
-        <div className="square-basic">
-          {selectedImage ? (
-            <img src={selectedImage} alt="" />
-          ) : (
-            <span>Select Image</span>
-          )}
-        </div>
-      </label>
-      <button
-        onClick={handleUpload}
-        className=""
-        disabled={uploading}
-        style={{ opacity: uploading ? ".5" : "1" }}
-      >
-        {uploading ? "uploading..." : "Upload"}
-      </button>
-    </div>) */
 };
 export const getServerSideProps: GetServerSideProps = async (context) => {
   return {

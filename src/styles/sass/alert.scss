@@ -1,0 +1,12 @@
+.invalid__input {
+  border: 2px solid $alert-border-color;
+  //box-shadow: 0.2rem 0.3rem 0.1rem $alert-border-color;
+  animation: glowing 3s;
+}
+.button__next {
+  background-color: $green-light-color;
+  color: $primary-text-color;
+  &:hover {
+    box-shadow: 1rem 0.5rem 4rem $green-light-color;
+  }
+}

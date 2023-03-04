@@ -1,17 +1,15 @@
-import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest, NextApiResponse } from "next";
+import { _Categories } from "@/components/util/type";
 import formidable from "formidable";
-import { NextRequest } from "next/server";
-import path, { resolve } from "path";
+import path from "path";
 import fs from "fs";
 import { BuildProduct } from "@/components/util/connectDb";
 import { uploadImage } from "@/components/util/connectAws";
-import { getImage } from "@/components/util/connectAws";
 export const config = {
   api: {
     bodyParser: false,
   },
 };
-
 const Hediye = async (req: NextApiRequest, res: NextApiResponse) => {
   const options: formidable.Options = {};
   const time = new Date().getTime().toString();
@@ -43,16 +41,6 @@ const Hediye = async (req: NextApiRequest, res: NextApiResponse) => {
     } catch (error) {
       res.status(500).json({ message: "error" });
     }
-
-    //@ts-ignore
-    //await BuildProduct(str);
-
-    /* Promise.resolve(uploadImage({ key: newPath, body: files }))
-      .then(() => 
-      .then(() => res.status(200).json({ message: "imageUpload done" }));
-  }); */
-
-    //const uploadParams = {};
   });
 };
 export default Hediye;

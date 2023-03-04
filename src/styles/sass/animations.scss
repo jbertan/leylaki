@@ -1,0 +1,33 @@
+@keyframes glowing {
+  0% {
+    border-color: aliceblue;
+    box-shadow: none;
+  }
+  25% {
+    border-color: $alert-border-color;
+    box-shadow: 0rem 0.3rem 0.5rem $alert-border-color;
+  }
+  50% {
+    border-color: aliceblue;
+    box-shadow: none;
+  }
+  100% {
+    border-color: $alert-border-color;
+    box-shadow: 0rem 0.3rem 0.5rem $alert-border-color;
+  }
+}
+
+@keyframes moveInRight {
+  0% {
+    opacity: 0;
+    transform: translateX(10rem);
+  }
+  80% {
+    transform: translateX(-2rem);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate(0);
+  }
+}
