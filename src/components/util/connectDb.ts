@@ -1,6 +1,6 @@
 global.TextEncoder = require("util").TextEncoder;
 global.TextDecoder = require("util").TextDecoder;
-
+import { IproductUpdate, IproductDelete } from "./type";
 import { ObjectId } from "mongodb";
 import { MongoClient } from "mongodb";
 enum _Db {
@@ -66,7 +66,7 @@ export const getAllProducts = async (categories: categoryType) => {
         .toArray();
     }
 
-    return JSON.parse(JSON.stringify(result));
+    return JSON.parse(JSON.stringify(result.reverse()));
   } catch (error) {
     return { error };
   }

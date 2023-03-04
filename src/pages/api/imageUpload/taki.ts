@@ -1,6 +1,6 @@
 import { NextApiResponse, NextApiRequest } from "next";
 import formidable from "formidable";
-
+import { _Categories } from "@/components/util/type";
 import path from "path";
 import fs from "fs";
 import { BuildProduct } from "@/components/util/connectDb";
