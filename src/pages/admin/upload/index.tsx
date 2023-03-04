@@ -118,8 +118,17 @@ const UploadFile: NextPage<Props> = () => {
                 onChange={({ target }) => {
                   if (target.files) {
                     const file = target.files[0];
-                    setSelectedImage(URL.createObjectURL(file));
-                    dispatch({ type: threshold.validFile, payload: file });
+                    if (!file) return;
+                    if (file.size < 1550000) {
+                      setSelectedImage(URL.createObjectURL(file));
+
+                      dispatch({ type: threshold.validFile, payload: file });
+                    } else {
+                      dispatch({
+                        type: threshold.invalidFile,
+                        payload: "File Size Bigger Than 1.5MB",
+                      });
+                    }
                   }
                 }}
               />
@@ -135,7 +144,9 @@ const UploadFile: NextPage<Props> = () => {
               <use href="/images/sprite.svg#icon-cloud-upload"></use>
             </svg>
             <p className="upload__container__draganddrops__explanation">
-              Resim Yüklemek için Dokun
+              {validate.error !== undefined
+                ? validate.error
+                : "Resim Yüklemek için Dokun"}
             </p>
             <p className="upload__container__draganddrops__explanation">
               - & -

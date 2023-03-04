@@ -10,3 +10,8 @@
     box-shadow: 1rem 0.5rem 4rem $green-light-color;
   }
 }
+
+.loading-bg {
+  background-color: black;
+  animation: glowing 3s;
+}

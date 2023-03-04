@@ -26,6 +26,7 @@ interface Iinitialstate {
   fileValue: any;
   kategoriValue: _Categories | undefined;
   checked: number;
+  error: string | undefined;
 }
 
 export type ACTIONTYPE =
@@ -41,7 +42,7 @@ export type ACTIONTYPE =
     }
   | { type: threshold.invalidKategori }
   | { type: threshold.validFile; payload: File }
-  | { type: threshold.invalidFile }
+  | { type: threshold.invalidFile; payload?: string }
   | { type: threshold.resetAll };
 
 export const initialState: Iinitialstate = {
@@ -55,6 +56,7 @@ export const initialState: Iinitialstate = {
   fileValue: null,
   kategoriValue: undefined,
   checked: 0,
+  error: undefined,
 };
 export const validateReducer = (
   state: typeof initialState,
@@ -66,9 +68,14 @@ export const validateReducer = (
     case threshold.valid:
       return { ...state, valid: true };
     case threshold.invalidFile:
-      return { ...state, file: false };
+      return { ...state, file: false, error: action.payload };
     case threshold.validFile:
-      return { ...state, file: true, fileValue: action.payload };
+      return {
+        ...state,
+        file: true,
+        error: undefined,
+        fileValue: action.payload,
+      };
     case threshold.invalidKod:
       return { ...state, kod: false };
     case threshold.validKod:
