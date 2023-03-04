@@ -16,23 +16,23 @@ const Admin = () => {
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const { data: session, status } = useSession();
-  const [result, setResult] = useState<SignInResponse | undefined>(undefined);
+  const [loading, setLoading] = useState<boolean>();
   const router = useRouter();
-  console.log(process.env.SECRET);
-  const sendValidation = () => {};
+
   const submitHandler = async (e: FormEvent) => {
     e.preventDefault();
+    setLoading(true);
     const userName = usernameRef.current?.value;
     const password = passwordRef.current?.value;
     console.log(`Kullanıcı adı: ${userName} ve şifre ${password}`);
     const hashedPass = hashPassword(password!);
     console.log(hashedPass);
-    const result = await signIn("credentials", {
+
+    signIn("credentials", {
       redirect: false,
       userName,
       password,
-    });
-    setResult(result);
+    }).then(() => setLoading(false));
 
     if (usernameRef.current && passwordRef.current) {
       usernameRef.current.value = "";
@@ -71,7 +71,7 @@ const Admin = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <section className="admin">
+      <section className={`admin ${loading && "loading-bg"}`}>
         <form className="admin__container">
           <div className="admin__container__button__wrap">
             <button
@@ -79,7 +79,9 @@ const Admin = () => {
               onClick={submitHandler}
               type="submit"
             >
-              {loadingStatus === "unauthenticated"
+              {loading
+                ? "Wait"
+                : loadingStatus === "unauthenticated"
                 ? "Login"
                 : loadingStatus === "loading"
                 ? "loading"
@@ -93,6 +95,7 @@ const Admin = () => {
               id="username"
               ref={usernameRef}
               placeholder="username"
+              disabled={loading}
             />
             <label htmlFor="username" className="admin__container__label">
               username
@@ -105,6 +108,7 @@ const Admin = () => {
               id="password"
               ref={passwordRef}
               placeholder="password"
+              disabled={loading}
             />
             <label htmlFor="password" className="admin__container__label">
               password

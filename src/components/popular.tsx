@@ -1,12 +1,17 @@
 import Button from "./button";
 import SmallBadge from "./smallBadge";
 import ImageHolder from "./imageholder";
+import { useRouter } from "next/router";
 import popular2 from "../static-img/popular2.jpg";
 import popular3 from "../static-img/popular3.jpg";
 import popular4 from "../static-img/popular4.jpg";
 import popular5 from "../static-img/popular5.jpg";
 import popular6 from "../static-img/popular6.jpg";
 const Popular = () => {
+  const router = useRouter();
+  const submitHandler = () => {
+    router.push("/hediyelik-esya");
+  };
   return (
     <>
       <div className="popular__wheretonext">
@@ -40,10 +45,7 @@ const Popular = () => {
         <h3 className="popular__explore__h3">
           Takılar içerisinde, size en çok yakışanı bulun.
         </h3>
-        <Button
-          onClick={() => console.log("explorerButton")}
-          buttonName={"Keşfet"}
-        >
+        <Button onClick={submitHandler} buttonName={"Keşfet"}>
           KEŞFET &rarr;
         </Button>
       </div>
